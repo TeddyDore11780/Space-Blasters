@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Space Blasters</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    #game-ui {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+    }
+    #score {
+      font-size: 20px;
+    }
+    #game-over {
+      display: none; /* Hide by default */
+      font-size: 48px;
+      color: red;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+    #startText {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 2em;
+      text-align: center;
+      pointer-events: none; /* 🔥 So clicks pass through */
+    }
+    canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="game-ui">
+  <div id="score">Score: 0</div>
+</div>
+
+<canvas id="glcanvas" width="1250" height="600"></canvas>
+
+<div id="startText">Press R to Start</div>
+
+<!-- 🔥 Important Game Over Text -->
+<div id="game-over">GAME OVER</div>
+
+<div id="pauseText" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: yellow; font-size: 2em; text-align: center;">PAUSED</div>
+
+<!-- 🔊 Sound Effects -->
+<audio id="bullet-sound" src="laser.mp3" preload="auto"></audio>
+<audio id="meteor-destroy-sound" src="destroy.mp3" preload="auto"></audio>
+<audio id="enemy1-destroy-sound" src="enemy1_destroy.mp3" preload="auto"></audio>
+<audio id="enemy2-destroy-sound" src="enemy2_destroy.mp3" preload="auto"></audio>
+<audio id="boss-explosion-sound" src="boss_explosion.mp3" preload="auto"></audio>
+<audio id="boss-background-music" src="boss_music.mp3" preload="auto" loop></audio>
+<audio id="normal-background-music" src="normal_music.mp3" preload="auto" loop autoplay></audio>
+<audio id="player-hit-sound" src="player_hit.mp3" preload="auto"></audio>
+<audio id="game-over-sound" src="gameover.mp3" preload="auto"></audio>
+<audio id="boss-theme-sound" src="boss_music.mp3" preload="auto" loop></audio>
+
+<script src="gl-matrix.js"></script>
+<script type="module" src="./main.js"></script>
+
+</body>
+</html>

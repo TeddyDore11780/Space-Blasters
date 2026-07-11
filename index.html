@@ -1,0 +1,191 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to the Game</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+    }
+
+    #overlay {
+      background-color: rgba(0, 0, 0, 0.7);
+      width: 100%;                                                                              
+      height: 100%;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    #menu {
+      text-align: center;
+      background: rgba(20, 20, 20, 0.8);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 30px white;
+      opacity: 0;
+      transform: translateY(-20px);
+      animation: slideIn 2s forwards 1s;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid white;
+      width: 0;
+      animation: typing 2s steps(30, end) forwards 0.5s, blink 0.7s step-end infinite;
+    }
+
+    .btn {
+      display: block;
+      width: 220px;
+      margin: 20px auto;
+      padding: 12px;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      border: none;
+      border-radius: 12px;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: background 0.4s;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #ff4b2b, #ff416c);
+    }
+
+    /* Modal Styles */
+    #instructionsModal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      padding: 20px;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.85);
+      color: white;
+      overflow-y: auto;
+    }
+
+    #instructionsModalContent {
+      max-width: 800px;
+      margin: 80px auto;
+      background-color: #222;
+      border-radius: 15px;
+      padding: 30px;
+      text-align: left;
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+
+    .closeModal {
+      float: right;
+      font-size: 1.4em;
+      cursor: pointer;
+      color: red;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop autoplay>
+  <source src="expedientes-secretos-x-musica22.mp3" type="audio/mpeg">
+  Your browser does not support audio.
+</audio>
+
+<!-- Fancy Overlay -->
+<div id="overlay">
+  <div id="menu">
+    <h1>Ready to Play?</h1>
+    <button class="btn" onclick="startGame()">Start Game</button>
+    <button class="btn" onclick="exitGame()">Exit</button>
+    <button class="btn" onclick="showInstructions()">Instructions</button>
+  </div>
+</div>
+
+<!-- Instructions Modal -->
+<div id="instructionsModal">
+  <div id="instructionsModalContent">
+    <span class="closeModal" onclick="closeInstructions()">&times;</span>
+    <h2>Game Instructions</h2>
+    <ul>
+      <li>Press <strong>R</strong> to Start the game</li>
+      <li>Press <strong>P</strong> to Pause / Resume the game</li>
+      <li>Use <strong>Arrow Keys</strong> for movement</li>
+      <li>Short press <strong>Space</strong> = Periodic Bullet Fire</li>
+      <li>Long press <strong>Space</strong> = Rapid Bullet Fire</li>
+      <li><strong>Meteors/Rocks</strong>: Shoot 5 times to destroy</li>
+      <li><strong>Small Enemies</strong>: Die in 1 shot</li>
+      <li><strong>Bigger/Brown Enemies</strong>: Shoot 10 times to destroy</li>
+      <li>Each big enemy killed spawns 2 more small enemies</li>
+      <li>After killing 10 big enemies, a <strong>Boss</strong> appears</li>
+      <li>Shoot the Boss 20 times to defeat it</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  const music = document.getElementById('bgMusic');
+  music.volume = 0.5;
+  document.addEventListener('click', () => {
+    music.play().catch(() => {});
+  });
+
+  function startGame() {
+    window.location.href = "game.html"; // Load the game
+  }
+
+  function exitGame() {
+    if (confirm("Are you sure you want to exit?")) {
+      window.close();
+      alert("Thanks for visiting! Close the tab manually if needed.");
+    }
+  }
+
+  function showInstructions() {
+    document.getElementById('instructionsModal').style.display = 'block';
+  }
+
+  function closeInstructions() {
+    document.getElementById('instructionsModal').style.display = 'none';
+  }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key) {
+      startGame();
+    }
+  });
+</script>
+
+</body>
+</html>
