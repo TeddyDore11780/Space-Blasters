@@ -6,7 +6,7 @@ export class Player {
     this.shaderProgram = shaderProgram;
 
     this.x = 0;
-    this.y = -0.8;
+    this.y = -0.55;
     this.speed = 0.02;
 
     this.width = 0.2;
