@@ -1,191 +1,388 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Welcome to the Game</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: url('background.jpg') no-repeat center center fixed;
-      background-size: cover;
-      font-family: 'Poppins', sans-serif;
-      color: white;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    #overlay {
-      background-color: rgba(0, 0, 0, 0.7);
-      width: 100%;                                                                              
-      height: 100%;
-      position: absolute;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      animation: fadeIn 2s ease forwards;
-    }
+    <title>Space Blasters</title>
 
-    #menu {
-      text-align: center;
-      background: rgba(20, 20, 20, 0.8);
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 0 30px white;
-      opacity: 0;
-      transform: translateY(-20px);
-      animation: slideIn 2s forwards 1s;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 20px;
-      white-space: nowrap;
-      overflow: hidden;
-      border-right: 2px solid white;
-      width: 0;
-      animation: typing 2s steps(30, end) forwards 0.5s, blink 0.7s step-end infinite;
-    }
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: url('background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+        }
 
-    .btn {
-      display: block;
-      width: 220px;
-      margin: 20px auto;
-      padding: 12px;
-      background: linear-gradient(135deg, #00c6ff, #0072ff);
-      border: none;
-      border-radius: 12px;
-      font-size: 1.2em;
-      cursor: pointer;
-      transition: background 0.4s;
-    }
+        #overlay {
+            background-color: rgba(0, 0, 0, 0.7);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 2s ease forwards;
+            padding: 20px;
+        }
 
-    .btn:hover {
-      background: linear-gradient(135deg, #ff4b2b, #ff416c);
-    }
+        #menu {
+            text-align: center;
+            background: rgba(20, 20, 20, 0.85);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px white;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: slideIn 2s forwards 1s;
+            max-width: 500px;
+            width: 100%;
+        }
 
-    /* Modal Styles */
-    #instructionsModal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      padding: 20px;
-      left: 0;
-      top: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.85);
-      color: white;
-      overflow-y: auto;
-    }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid white;
+            width: 0;
+            animation:
+                typing 2s steps(30, end) forwards 0.5s,
+                blink 0.7s step-end infinite;
+        }
 
-    #instructionsModalContent {
-      max-width: 800px;
-      margin: 80px auto;
-      background-color: #222;
-      border-radius: 15px;
-      padding: 30px;
-      text-align: left;
-      font-size: 1.1em;
-      line-height: 1.6;
-    }
+        .btn {
+            display: block;
+            width: 240px;
+            max-width: 100%;
+            margin: 20px auto;
+            padding: 15px;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            color: white;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
 
-    .closeModal {
-      float: right;
-      font-size: 1.4em;
-      cursor: pointer;
-      color: red;
-    }
+        .btn:hover {
+            background: linear-gradient(135deg, #ff4b2b, #ff416c);
+            transform: scale(1.05);
+        }
 
-    @keyframes fadeIn {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
-    }
+        .btn:active {
+            transform: scale(0.96);
+        }
 
-    @keyframes slideIn {
-      to { opacity: 1; transform: translateY(0); }
-    }
+        /* Instructions Modal */
 
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 100%; }
-    }
+        #instructionsModal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            padding: 20px;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow-y: auto;
+            color: white;
+        }
 
-    @keyframes blink {
-      50% { border-color: transparent; }
-    }
-  </style>
+        #instructionsModalContent {
+            max-width: 850px;
+            margin: 50px auto;
+            background-color: #222;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: left;
+            line-height: 1.7;
+        }
+
+        .closeModal {
+            float: right;
+            font-size: 1.6em;
+            cursor: pointer;
+            color: red;
+        }
+
+        .closeModal:hover {
+            color: orange;
+        }
+
+        /* Mobile Notice */
+
+        #mobileNotice {
+            display: none;
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 10px;
+            background-color: rgba(255, 165, 0, 0.2);
+            border: 1px solid orange;
+        }
+
+        /* Animations */
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        /* Mobile Responsive */
+
+        @media (max-width: 768px) {
+
+            body {
+                overflow-y: auto;
+            }
+
+            #menu {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .btn {
+                width: 100%;
+                font-size: 1em;
+            }
+
+            #mobileNotice {
+                display: block;
+            }
+
+        }
+    </style>
+
 </head>
 
 <body>
 
-<!-- Background Music -->
-<audio id="bgMusic" loop autoplay>
-  <source src="expedientes-secretos-x-musica22.mp3" type="audio/mpeg">
-  Your browser does not support audio.
-</audio>
+    <!-- Background Music -->
 
-<!-- Fancy Overlay -->
-<div id="overlay">
-  <div id="menu">
-    <h1>Ready to Play?</h1>
-    <button class="btn" onclick="startGame()">Start Game</button>
-    <button class="btn" onclick="exitGame()">Exit</button>
-    <button class="btn" onclick="showInstructions()">Instructions</button>
-  </div>
-</div>
+    <audio id="bgMusic" loop autoplay>
+        <source src="expedientes-secretos-x-musica22.mp3" type="audio/mpeg">
+    </audio>
 
-<!-- Instructions Modal -->
-<div id="instructionsModal">
-  <div id="instructionsModalContent">
-    <span class="closeModal" onclick="closeInstructions()">&times;</span>
-    <h2>Game Instructions</h2>
-    <ul>
-      <li>Press <strong>R</strong> to Start the game</li>
-      <li>Press <strong>P</strong> to Pause / Resume the game</li>
-      <li>Use <strong>Arrow Keys</strong> for movement</li>
-      <li>Short press <strong>Space</strong> = Periodic Bullet Fire</li>
-      <li>Long press <strong>Space</strong> = Rapid Bullet Fire</li>
-      <li><strong>Meteors/Rocks</strong>: Shoot 5 times to destroy</li>
-      <li><strong>Small Enemies</strong>: Die in 1 shot</li>
-      <li><strong>Bigger/Brown Enemies</strong>: Shoot 10 times to destroy</li>
-      <li>Each big enemy killed spawns 2 more small enemies</li>
-      <li>After killing 10 big enemies, a <strong>Boss</strong> appears</li>
-      <li>Shoot the Boss 20 times to defeat it</li>
-    </ul>
-  </div>
-</div>
+    <!-- Main Menu -->
 
-<script>
-  const music = document.getElementById('bgMusic');
-  music.volume = 0.5;
-  document.addEventListener('click', () => {
-    music.play().catch(() => {});
-  });
+    <div id="overlay">
 
-  function startGame() {
-    window.location.href = "game.html"; // Load the game
-  }
+        <div id="menu">
 
-  function exitGame() {
-    if (confirm("Are you sure you want to exit?")) {
-      window.close();
-      alert("Thanks for visiting! Close the tab manually if needed.");
-    }
-  }
+            <h1>Ready to Play?</h1>
 
-  function showInstructions() {
-    document.getElementById('instructionsModal').style.display = 'block';
-  }
+            <button class="btn" onclick="startGame()">
+                Start Game
+            </button>
 
-  function closeInstructions() {
-    document.getElementById('instructionsModal').style.display = 'none';
-  }
+            <button class="btn" onclick="exitGame()">
+                Exit
+            </button>
 
-  document.addEventListener('keydown', (event) => {
-    if (event.key) {
-      startGame();
-    }
-  });
-</script>
+            <button class="btn" onclick="showInstructions()">
+                Instructions
+            </button>
+
+            <div id="mobileNotice">
+
+                <strong>Mobile Players</strong>
+
+                <p>
+                    For the best gaming experience,
+                    rotate your phone to Landscape Mode.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Instructions -->
+
+    <div id="instructionsModal">
+
+        <div id="instructionsModalContent">
+
+            <span class="closeModal"
+                onclick="closeInstructions()">&times;</span>
+
+            <h2>Game Instructions</h2>
+
+            <ul>
+
+                <li>
+                    Press <strong>R</strong> to Start the game.
+                </li>
+
+                <li>
+                    Press <strong>P</strong> to Pause / Resume.
+                </li>
+
+                <li>
+                    Use <strong>Arrow Keys</strong> for movement.
+                </li>
+
+                <li>
+                    Short press <strong>Space</strong> = Periodic Bullet Fire.
+                </li>
+
+                <li>
+                    Long press <strong>Space</strong> = Rapid Bullet Fire.
+                </li>
+
+                <li>
+                    Meteors require <strong>5 hits</strong>.
+                </li>
+
+                <li>
+                    Small enemies die in <strong>1 hit</strong>.
+                </li>
+
+                <li>
+                    Big enemies require <strong>10 hits</strong>.
+                </li>
+
+                <li>
+                    Every big enemy destroyed spawns
+                    <strong>2 small enemies.</strong>
+                </li>
+
+                <li>
+                    After destroying 10 big enemies,
+                    the Boss appears.
+                </li>
+
+                <li>
+                    The Boss requires <strong>20 hits</strong>.
+                </li>
+
+            </ul>
+
+            <hr>
+
+            <h3>Mobile Controls</h3>
+
+            <ul>
+
+                <li>Touch directional buttons to move.</li>
+
+                <li>Hold the FIRE button to shoot.</li>
+
+                <li>Tap START to begin the game.</li>
+
+                <li>Tap PAUSE to pause or resume.</li>
+
+                <li>Play in Landscape Mode for best performance.</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        const music = document.getElementById("bgMusic");
+
+        music.volume = 0.5;
+
+        function playMusic() {
+
+            music.play().catch(() => { });
+
+        }
+
+        document.addEventListener("click", playMusic);
+        document.addEventListener("touchstart", playMusic);
+
+        function startGame() {
+
+            window.location.href = "game.html";
+
+        }
+
+        function exitGame() {
+
+            if (confirm("Are you sure you want to exit?")) {
+
+                window.close();
+
+                alert(
+                    "Thanks for playing Space Blasters!\n\nYou may close this tab."
+                );
+
+            }
+
+        }
+
+        function showInstructions() {
+
+            document.getElementById(
+                "instructionsModal"
+            ).style.display = "block";
+
+        }
+
+        function closeInstructions() {
+
+            document.getElementById(
+                "instructionsModal"
+            ).style.display = "none";
+
+        }
+
+        // Desktop shortcut
+
+        document.addEventListener("keydown", () => {
+
+            startGame();
+
+        });
+
+    </script>
 
 </body>
+
 </html>

@@ -1,83 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Space Blasters</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: black;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
-    #game-ui {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 10;
-    }
-    #score {
-      font-size: 20px;
-    }
-    #game-over {
-      display: none; /* Hide by default */
-      font-size: 48px;
-      color: red;
-      position: absolute;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      font-family: Arial, sans-serif;
-    }
-    #startText {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      font-size: 2em;
-      text-align: center;
-      pointer-events: none; /* 🔥 So clicks pass through */
-    }
-    canvas {
-      display: block;
-      width: 100vw;
-      height: 100vh;
-    }
-  </style>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width,
+                 initial-scale=1.0,
+                 maximum-scale=1.0,
+                 user-scalable=no">
+
+    <title>Space Blasters</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+
+        #game-ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 50;
+        }
+
+        #score {
+            font-size: 20px;
+        }
+
+        #game-over {
+            display: none;
+            font-size: 48px;
+            color: red;
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 100;
+        }
+
+        #startText {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 2em;
+            text-align: center;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        #pauseText {
+
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: yellow;
+            font-size: 2em;
+            text-align: center;
+            z-index: 100;
+
+        }
+
+        canvas {
+
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            touch-action: none;
+
+        }
+
+
+        /* ==================================== */
+        /* MOBILE CONTROLS                      */
+        /* ==================================== */
+
+
+        #mobile-controls {
+
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            pointer-events: none;
+            user-select: none;
+
+        }
+
+
+        .movement-controls {
+
+            position: absolute;
+            left: 20px;
+            bottom: 20px;
+            width: 170px;
+            height: 170px;
+            pointer-events: auto;
+
+        }
+
+
+        .game-controls {
+
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            pointer-events: auto;
+
+        }
+
+
+        .mobile-button {
+
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid white;
+            background: rgba(0, 0, 50, 0.8);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            touch-action: none;
+
+        }
+
+
+        .mobile-button:active {
+
+            transform: scale(0.95);
+
+        }
+
+
+        /* D PAD */
+
+
+        #move-up {
+
+            top: 0;
+            left: 55px;
+
+        }
+
+
+        #move-left {
+
+            top: 55px;
+            left: 0;
+
+        }
+
+
+        #move-right {
+
+            top: 55px;
+            right: 0;
+
+        }
+
+
+        #move-down {
+
+            bottom: 0;
+            left: 55px;
+
+        }
+
+
+        /* FIRE BUTTON */
+
+
+        #fire-button {
+
+            position: static;
+            width: 95px;
+            height: 95px;
+            background: rgba(255, 0, 0, 0.8);
+            font-size: 18px;
+
+        }
+
+
+        /* START AND PAUSE */
+
+
+        .small-buttons {
+
+            display: flex;
+            gap: 10px;
+
+        }
+
+
+        #start-button,
+        #pause-button {
+
+            position: static;
+            width: 75px;
+            height: 45px;
+            border-radius: 10px;
+            font-size: 13px;
+
+        }
+
+
+        /* LANDSCAPE MESSAGE */
+
+
+        #rotate-phone {
+
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: black;
+            color: white;
+            z-index: 5000;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px;
+            font-size: 22px;
+
+        }
+
+
+        /* SHOW MOBILE CONTROLS */
+
+
+        @media (hover:none) and (pointer:coarse) {
+
+            #mobile-controls {
+
+                display: block;
+
+            }
+
+        }
+
+
+        @media screen and (orientation:portrait) {
+
+            #rotate-phone {
+
+                display: flex;
+
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
+
 <div id="game-ui">
-  <div id="score">Score: 0</div>
+
+    <div id="score">
+
+        Score : 0
+
+    </div>
+
 </div>
 
-<canvas id="glcanvas" width="1250" height="600"></canvas>
 
-<div id="startText">Press R to Start</div>
 
-<!-- 🔥 Important Game Over Text -->
-<div id="game-over">GAME OVER</div>
+<canvas id="glcanvas"
+        width="1250"
+        height="600">
 
-<div id="pauseText" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: yellow; font-size: 2em; text-align: center;">PAUSED</div>
+</canvas>
 
-<!-- 🔊 Sound Effects -->
-<audio id="bullet-sound" src="laser.mp3" preload="auto"></audio>
-<audio id="meteor-destroy-sound" src="destroy.mp3" preload="auto"></audio>
-<audio id="enemy1-destroy-sound" src="enemy1_destroy.mp3" preload="auto"></audio>
-<audio id="enemy2-destroy-sound" src="enemy2_destroy.mp3" preload="auto"></audio>
-<audio id="boss-explosion-sound" src="boss_explosion.mp3" preload="auto"></audio>
-<audio id="boss-background-music" src="boss_music.mp3" preload="auto" loop></audio>
-<audio id="normal-background-music" src="normal_music.mp3" preload="auto" loop autoplay></audio>
-<audio id="player-hit-sound" src="player_hit.mp3" preload="auto"></audio>
-<audio id="game-over-sound" src="gameover.mp3" preload="auto"></audio>
-<audio id="boss-theme-sound" src="boss_music.mp3" preload="auto" loop></audio>
+
+
+<div id="startText">
+
+    Press R to Start
+
+</div>
+
+
+
+<div id="game-over">
+
+    GAME OVER
+
+</div>
+
+
+
+<div id="pauseText">
+
+    PAUSED
+
+</div>
+
+
+
+<!-- MOBILE ROTATION MESSAGE -->
+
+
+<div id="rotate-phone">
+
+    Rotate your phone to Landscape Mode to play Space Blasters.
+
+</div>
+
+
+
+<!-- MOBILE CONTROLS -->
+
+
+<div id="mobile-controls">
+
+
+    <div class="movement-controls">
+
+        <button id="move-up"
+                class="mobile-button">
+
+            ▲
+
+        </button>
+
+
+        <button id="move-left"
+                class="mobile-button">
+
+            ◀
+
+        </button>
+
+
+        <button id="move-right"
+                class="mobile-button">
+
+            ▶
+
+        </button>
+
+
+        <button id="move-down"
+                class="mobile-button">
+
+            ▼
+
+        </button>
+
+
+    </div>
+
+
+
+    <div class="game-controls">
+
+
+        <button id="fire-button"
+                class="mobile-button">
+
+            FIRE
+
+        </button>
+
+
+
+        <div class="small-buttons">
+
+
+            <button id="start-button"
+                    class="mobile-button">
+
+                START
+
+            </button>
+
+
+
+            <button id="pause-button"
+                    class="mobile-button">
+
+                PAUSE
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- SOUND EFFECTS -->
+
+
+<audio id="bullet-sound"
+       src="laser.mp3"
+       preload="auto"></audio>
+
+
+<audio id="meteor-destroy-sound"
+       src="destroy.mp3"
+       preload="auto"></audio>
+
+
+<audio id="enemy1-destroy-sound"
+       src="enemy1_destroy.mp3"
+       preload="auto"></audio>
+
+
+<audio id="enemy2-destroy-sound"
+       src="enemy2_destroy.mp3"
+       preload="auto"></audio>
+
+
+<audio id="boss-explosion-sound"
+       src="boss_explosion.mp3"
+       preload="auto"></audio>
+
+
+<audio id="boss-background-music"
+       src="boss_music.mp3"
+       preload="auto"
+       loop></audio>
+
+
+<audio id="normal-background-music"
+       src="normal_music.mp3"
+       preload="auto"
+       loop
+       autoplay></audio>
+
+
+<audio id="player-hit-sound"
+       src="player_hit.mp3"
+       preload="auto"></audio>
+
+
+<audio id="game-over-sound"
+       src="gameover.mp3"
+       preload="auto"></audio>
+
+
+<audio id="boss-theme-sound"
+       src="boss_music.mp3"
+       preload="auto"
+       loop></audio>
+
+
 
 <script src="gl-matrix.js"></script>
-<script type="module" src="./main.js"></script>
+
+<script type="module"
+        src="./main.js">
+
+</script>
+
 
 </body>
+
 </html>

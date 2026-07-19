@@ -412,3 +412,215 @@ function render() {
   requestAnimationFrame(render);
 }
 render();
+//======================================================
+// MOBILE CONTROLS
+//======================================================
+
+
+// ---------- Arrow Buttons ----------
+
+function holdMovement(buttonID, key) {
+
+    const button = document.getElementById(buttonID);
+
+    if (!button) return;
+
+    button.addEventListener("touchstart", (e) => {
+
+        e.preventDefault();
+
+        keys[key] = true;
+
+    }, { passive: false });
+
+
+    button.addEventListener("touchend", (e) => {
+
+        e.preventDefault();
+
+        keys[key] = false;
+
+    }, { passive: false });
+
+}
+
+
+// ---------- FIRE BUTTON ----------
+
+function holdFireButton() {
+
+    const button = document.getElementById("fire-button");
+
+    if (!button) return;
+
+
+    button.addEventListener("touchstart", (e) => {
+
+        e.preventDefault();
+
+        keys[" "] = true;
+
+    }, { passive: false });
+
+
+    button.addEventListener("touchend", (e) => {
+
+        e.preventDefault();
+
+        keys[" "] = false;
+
+    }, { passive: false });
+
+}
+
+
+// ---------- START GAME ----------
+
+function setupStartButton() {
+
+    const button = document.getElementById("start-button");
+
+    if (!button) return;
+
+
+    button.addEventListener("click", () => {
+
+        if (!gameStarted) {
+
+            gameStarted = true;
+
+            startText.style.display = "none";
+
+            normalMusic.play();
+
+        }
+
+        if (gameOver) {
+
+            window.location.reload();
+
+        }
+
+    });
+
+}
+
+
+
+// ---------- PAUSE GAME ----------
+
+function setupPauseButton() {
+
+    const button = document.getElementById("pause-button");
+
+    if (!button) return;
+
+
+    button.addEventListener("click", () => {
+
+        if (!gameStarted || gameOver) return;
+
+        paused = !paused;
+
+        const pauseText = document.getElementById("pauseText");
+
+
+        if (paused) {
+
+            pauseText.style.display = "block";
+
+        }
+
+        else {
+
+            pauseText.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+
+// ---------- CANVAS RESIZE ----------
+
+function resizeCanvas() {
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    gl.viewport(
+
+        0,
+        0,
+        canvas.width,
+        canvas.height
+
+    );
+
+}
+
+
+window.addEventListener(
+
+    "resize",
+
+    resizeCanvas
+
+);
+
+
+resizeCanvas();
+
+
+
+
+// ---------- INITIALISE MOBILE ----------
+
+function initialiseMobileControls() {
+
+    holdMovement(
+
+        "move-up",
+        "ArrowUp"
+
+    );
+
+
+    holdMovement(
+
+        "move-down",
+        "ArrowDown"
+
+    );
+
+
+    holdMovement(
+
+        "move-left",
+        "ArrowLeft"
+
+    );
+
+
+    holdMovement(
+
+        "move-right",
+        "ArrowRight"
+
+    );
+
+
+    holdFireButton();
+
+
+    setupStartButton();
+
+
+    setupPauseButton();
+
+}
+
+
+initialiseMobileControls();
